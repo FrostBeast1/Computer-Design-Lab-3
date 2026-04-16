@@ -70,5 +70,6 @@ simulation/*
 */timing/
 */testbench/
 */*_sim/
-/output_files/
+output_files/*
+!output_files/*.cdf
 PLLJ_PLLSPE_INFO.txt
