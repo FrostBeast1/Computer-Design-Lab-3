@@ -1,12 +1,11 @@
 module control_unit (Clk, Reset, U_neg, Done, Ctrl);
 	input  wire Clk, Reset, U_neg, Done;
 	// Control signals to data path.
-	// 0-load
-	// 1-shift
-	// 2-subtract
-	// 3-restore
-	// 4-set Q
-	// 5-count enabled
-	output	wire [5 : 0] Ctrl;
+	// 0 - Overflow
+	// 1 - Finish
+	// 2 - Start
+	// 3 - z -> i > 0
+	// 4 - g -> u <= x
+	output	wire [4 : 0] Ctrl;
 	
 endmodule
