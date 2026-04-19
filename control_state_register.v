@@ -1,6 +1,6 @@
 module control_state_register(clk_i, reset_i, z_i, Q_o);
-    input wire clk_i, reset_i, z_i;
-    output wire [1:0] Q_o;
+    input	wire	clk_i, reset_i, z_i;
+    output	wire	[1:0] Q_o;
 
     reg [1:0] state;
     reg [1:0] next_state;

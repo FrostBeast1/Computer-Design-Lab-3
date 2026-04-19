@@ -1,6 +1,26 @@
-module data_path (U, V, X, Ctrl, U_neg, Done, Overflow);
-	parameter BUS_WIDTH = 4;
-	inout	reg [BUS_WIDTH - 1 : 0] U, V, X;
+module data_path #(parameter BUS_WIDTH = 4) (U, V, X, Ctrl_In, Data_Out);
+	inout		wire	[BUS_WIDTH - 1 : 0] U, V, X;
+	
+	// Control signals from control unit:
+	// 0 - Start (used to clear and set appropriate registers)
+	// 1 - Overflow
+	// 2 - Finish
+	// 3 - g -> {0 -> u < x}, {1 -> u >= x}
+	// 4 - z -> {0 -> i > 0}, {1 -> i == 0}
+	input		reg	[4 : 0] Ctrl_In;
+	
+	// Conditional output to control unit:
+	// 0 - g_i = {0 -> u < x}, {1 -> u >= x}
+	// 1 - z_i = {0 -> i > 0}, {1 -> i == 0}
+	output	wire [1 : 0] Data_Out;
+
+	
+	
+	
+	
+	
+	
+	
 	// Control signals from control unit.
 	// 0-load
 	// 1-shift
@@ -8,8 +28,8 @@ module data_path (U, V, X, Ctrl, U_neg, Done, Overflow);
 	// 3-restore
 	// 4-set Q
 	// 5-count enabled
-	input		wire [5 : 0] Ctrl;
-	output	wire U_neg, Done, Overflow;
+	input		wire	[5 : 0] Ctrl_In;
+	output	wire	U_neg, Done, Overflow;
 	
 	// Internal registers and flags per specification
 	reg [BUS_WIDTH - 1 : 0] Y;       // y: n-bit quotient register
@@ -21,7 +41,7 @@ module data_path (U, V, X, Ctrl, U_neg, Done, Overflow);
 	// Output assignments
 	assign U_neg = C;                // C is borrow from subtract
 	assign Done = Z;                 // Done when counter reaches 0
-	assign Overflow = (G && Ctrl[0]); // Overflow flag on load if U >= X
+	assign Overflow = (G && Ctrl_In[0]); // Overflow flag on load if U >= X
 	
 	// Drive inout ports (internal drive when operating)
 	reg [BUS_WIDTH - 1 : 0] U_reg, V_reg, X_reg;
@@ -32,8 +52,9 @@ module data_path (U, V, X, Ctrl, U_neg, Done, Overflow);
 	assign X = drive_internal ? X_reg : {BUS_WIDTH{1'bz}};
 	
 	// Sequential logic
-	always @(posedge Ctrl[0] or posedge Ctrl[1] or posedge Ctrl[2] or posedge Ctrl[3] or posedge Ctrl[4]) begin
-		if (Ctrl[0]) begin
+	always @(posedge Ctrl_In[0] or posedge Ctrl_In[1] or posedge Ctrl_In[2]
+		or posedge Ctrl_In[3] or posedge Ctrl_In[4]) begin
+		if (Ctrl_In[0]) begin
 			// LOAD: Capture external inputs
 			drive_internal <= 1'b0;      // Tristate to read external values
 			#1;                           // Small delay to capture
@@ -49,7 +70,7 @@ module data_path (U, V, X, Ctrl, U_neg, Done, Overflow);
 			Y <= 0;
 		end
 		
-		else if (Ctrl[1]) begin
+		else if (Ctrl_In[1]) begin
 			// SHIFT: Shift UV left by 1
 			// U gets {U[2:0], V[3]}, V gets {V[2:0], 0}
 			U_reg <= {U_reg[BUS_WIDTH-2:0], V_reg[BUS_WIDTH-1]};
@@ -57,7 +78,7 @@ module data_path (U, V, X, Ctrl, U_neg, Done, Overflow);
 			C <= 1'b0;                   // Clear carry
 		end
 		
-		else if (Ctrl[2]) begin
+		else if (Ctrl_In[2]) begin
 			// SUBTRACT: U - X, set C (borrow)
 			if (U_reg >= X_reg) begin
 				// U >= X, no borrow
@@ -73,7 +94,7 @@ module data_path (U, V, X, Ctrl, U_neg, Done, Overflow);
 			// (stored implicitly in next state)
 		end
 		
-		else if (Ctrl[3]) begin
+		else if (Ctrl_In[3]) begin
 			// RESTORE: If no borrow (C=0), restore U = U - X, set V[0]=1
 			// If borrow (C=1), keep U, set V[0]=0
 			if (!C) begin
@@ -116,9 +137,5 @@ module data_path (U, V, X, Ctrl, U_neg, Done, Overflow);
 		G <= 0;
 		drive_internal <= 0;
 	end
-
-endmodule
-
-
 
 endmodule

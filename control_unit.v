@@ -1,16 +1,17 @@
-module control_unit (clk, reset, g_i, z_i, ctrl_o);
-	// Conditional inputs from data path: g_i, z_i
-	// g_i = {0 -> u < x}, {1 -> u >= x}
-	// z_i = {0 -> i > 0}, {1 -> i == 0}
-	input wire clk, reset, g_i, z_i;
+module control_unit (clk, reset, data_in, ctrl_out);
+	// Conditional inputs from data path:
+	// 0 - g_i = {0 -> u < x}, {1 -> u >= x}
+	// 1 - z_i = {0 -> i > 0}, {1 -> i == 0}
+	input		wire	[1 : 0] data_in;
+	input		wire	clk, reset;
 
-	// Control signals to data path.
+	// Control signals to data path:
 	// 0 - Start (used to clear and set appropriate registers)
 	// 1 - Overflow
 	// 2 - Finish
 	// 3 - g -> {0 -> u < x}, {1 -> u >= x}
 	// 4 - z -> {0 -> i > 0}, {1 -> i == 0}
-	output reg [4 : 0] ctrl_o;
+	output	reg	[4 : 0] ctrl_out;
 
 	wire [1:0] state;
 	
@@ -18,24 +19,24 @@ module control_unit (clk, reset, g_i, z_i, ctrl_o);
 	control_state_register cu_sm(
 		.clk_i(clk),
 		.reset_i(reset),
-		.z_i(z_i),
-		.Q_o(state),
+		.z_i(data_in[1]),
+		.Q_o(state)
 	);
 
 	// Combinational Flag logic
 	always @(state) begin
 		case(state)
 			// Step 0
-			2'b00: ctrl_o[4:0] = 5'b00001;
+			2'b00: ctrl_out[4:0] = 5'b00001;
 			2'b01: begin
-				ctrl_o[3:1] = {3{g_i}};
-				ctrl_o[0] = 1'b0;
+				ctrl_out[3:1] = {3{data_in[0]}};
+				ctrl_out[0] = 1'b0;
 			end
 			2'b10: begin
-				ctrl_o[3] = g_i;
-				ctrl_o[4] = z_i; 
+				ctrl_out[3] = data_in[0];
+				ctrl_out[4] = data_in[1]; 
 			end
-			2'b11: ctrl_o[2] = z_i ? ctrl_o[2] : z_i;
+			2'b11: ctrl_out[2] = data_in[1] ? ctrl_out[2] : data_in[1];
 		endcase
 	end
 
