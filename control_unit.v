@@ -1,8 +1,9 @@
-module control_unit (clk, reset, g_i, z_i, ctrl_o);
-	// Conditional inputs from data path: g_i, z_i
-	// g_i = {0 -> u < x}, {1 -> u >= x}
-	// z_i = {0 -> i > 0}, {1 -> i == 0}
-	input wire clk, reset, g_i, z_i;
+module control_unit (clk, reset, data_in, ctrl_out);
+	// Conditional inputs from data path:
+	// 0 - g_i = {0 -> u < x}, {1 -> u >= x}
+	// 1 - z_i = {0 -> i > 0}, {1 -> i == 0}
+	input		wire	[1 : 0] data_in;
+	input		wire	clk, reset;
 
 	// Control signals to data path.
 	// 0 - Step 1
@@ -21,8 +22,8 @@ module control_unit (clk, reset, g_i, z_i, ctrl_o);
 	control_state_register cu_sm(
 		.clk_i(clk),
 		.reset_i(reset),
-		.z_i(z_i),
-		.Q_o(state),
+		.z_i(data_in[1]),
+		.Q_o(state)
 	);
 
 	// Combinational Flag logic
