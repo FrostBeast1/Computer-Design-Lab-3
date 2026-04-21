@@ -1,19 +1,12 @@
-module shift_sub_div(U, V, X, Y);
-	parameter BUS_WIDTH = 4;
+module shift_sub_div #(parameter BUS_WIDTH = 4) (U, V, X, Y, Reset, Clk, Overflow);
+	input		wire	Reset, Clk;
+	inout		wire	[BUS_WIDTH - 1:0] U;
+	input		wire	[BUS_WIDTH - 1:0] V, X;
+	output	wire	[BUS_WIDTH - 1:0] Y;
+	output	wire	Overflow;
 
-<<<<<<< Updated upstream
-	inout  wire [BUS_WIDTH - 1:0] U;
-	input  wire [BUS_WIDTH - 1:0] V, X;
-	output wire [BUS_WIDTH - 1:0] Y;
-
-
-endmodule
-=======
-	// connecting wire for z and g registers to CU
 	wire [1:0] stat_flags;
-
-	// control signals from cu
-	wire [4:0] ctrl_sig;
+	wire [5:0] ctrl_sig;
 	
 	control_unit cu (
 		.clk(Clk),
@@ -33,4 +26,3 @@ endmodule
 	);
 	
 endmodule
->>>>>>> Stashed changes

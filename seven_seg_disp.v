@@ -1,8 +1,8 @@
 module seven_seg_disp (In, Out);
-	input [3:0] In; // Max output is F so 4 bits are needed
-	output reg [0:6] Out; // Out[0] = a to Out[6] = g in the display
+	input		wire	[3:0] In; // Max output is F so 4 bits are needed
+	output	reg	[0:6] Out; // Out[0] = a to Out[6] = g in the display
 	
-	always@(In)
+	always@(*)
 		// Out <- abcdefg
 		case(In)
 			4'b0000 : Out <= ~7'b1111110;
