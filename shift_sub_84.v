@@ -47,7 +47,7 @@ module shift_sub_84 (Dividend, Divisor, Quotient, Remainder, Overflow, Clk, Rese
 		end
    end
 	
-	always @(*) begin
+	always @(state) begin
 	
 		next_state = state;
 		next_u = u;
