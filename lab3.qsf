@@ -107,6 +107,8 @@ set_location_assignment PIN_M23 -to Reset
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name VERILOG_FILE shift_sub_84.v
 set_global_assignment -name VERILOG_FILE control_state_register.v
 set_global_assignment -name VERILOG_FILE register.v
 set_global_assignment -name VERILOG_FILE data_path.v
@@ -116,4 +118,5 @@ set_global_assignment -name VERILOG_FILE parallel_adder.v
 set_global_assignment -name BDF_FILE shift_sub_div_full.bdf
 set_global_assignment -name BDF_FILE shift_sub_div_alt.bdf
 set_global_assignment -name VERILOG_FILE shift_sub_div.v
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
