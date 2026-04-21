@@ -12,6 +12,7 @@ module shift_sub_84 (Dividend, Divisor, Quotient, Remainder, Overflow, Clk, Rese
    reg [2:0] i;
 
    // Next versions of registers
+	// Needed when reffering to itself i.e. i = i - 1
    reg [3:0] next_u, next_v, next_x, next_y;
    reg [2:0] next_i;
 
