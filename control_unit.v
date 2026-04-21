@@ -8,8 +8,7 @@ module control_unit (clk, reset, g_i, z_i, ctrl_o);
 	// 0 - Step 1
 	// 1 - Step 2
 	// 2 - Step 3
-	// 3 - Finish flag
-	output wire [3:0] ctrl_o;
+	output wire [2:0] ctrl_o;
 	
 	reg [3:0] control;
 	wire [1:0] state;
@@ -27,7 +26,6 @@ module control_unit (clk, reset, g_i, z_i, ctrl_o);
 
 	// Combinational Flag logic
 	always @(state, z_i) begin
-	control[3] <= z_i;
 		
 		// Locks control unit output if z = 1
 		if (!(z_i)) begin
