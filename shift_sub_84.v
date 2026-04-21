@@ -116,8 +116,14 @@ module shift_sub_84 (Dividend, Divisor, Quotient, Remainder, Overflow, Clk, Rese
 			3'b101 : begin
 				next_Finish = 1'b1;
 				Quotient = y;
-				Remainder = u;
 				next_state = 3'b101;
+				
+				// Stops nonsensical remainder from displaying when overflow
+				if (Overflow)
+					Remainder = 4'b0000;
+				else	
+					Remainder = u;
+					
 			end
 			default: next_state = 3'b000;
 		endcase
