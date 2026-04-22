@@ -5,9 +5,9 @@ module control_unit (clk, reset, g_i, z_i, ctrl_o);
 	input wire clk, reset, g_i, z_i;
 
 	// Control signals to data path.
-	// 0 - Step 1
-	// 1 - Step 2
-	// 2 - Step 3
+	// 001 - Step 1
+	// 010 - Step 2
+	// 100 - Step 3
 	// 3 - Finish flag
 	// 4 - Overflow flag
 	output wire [3:0] ctrl_o;

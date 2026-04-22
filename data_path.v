@@ -3,9 +3,9 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
    input wire [BUS_WIDTH - 1:0] Divisor;
 	
 	// Control signals from control unit:
-	// 0 - Step 1
-	// 1 - Step 2
-	// 2 - Step 3
+	// 001 - Step 1
+	// 010 - Step 2
+	// 100 - Step 3
 	input wire [2:0] Ctrl_In;
    input wire Clk;
 	
@@ -14,9 +14,9 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
 	// 1 - z_i = {0 -> i > 0}, {1 -> i == 0}
     // 2 - Overflow flag (set if initial overflow occurs)
     // 3 - Finish flag (set once algorithm is finished)
-	output wire [3:0] Data_Out;
-   output wire [3:0] Quotient;
-   output wire [3:0] Remainder;
+	output wire [BUS_WIDTH - 1:0] Data_Out;
+   output wire [BUS_WIDTH - 1:0] Quotient;
+   output wire [BUS_WIDTH - 1:0] Remainder;
 	
 	// Internal registers and flags per specification
 	reg [BUS_WIDTH - 1:0] Y;       // y: n-bit quotient register
