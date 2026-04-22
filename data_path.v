@@ -34,7 +34,7 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
 	
 	// Z & G combinational assigments (we can read from these in the always block as well)
    assign Data_Out[0] = {C,U} < Divisor ? 1'b0 : 1'b1;
-	assign Data_Out[1] = Counter > 1'd0 ? 1'b0 : 1'b1;
+	assign Data_Out[1] = (Counter > 1'd0) && (Ctrl_In != 1'd0) ? 1'b0 : 1'b1;
 
    assign Data_Out[2] = overflow;
    assign Data_Out[3] = finish;
@@ -46,9 +46,9 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
 	
 	// Sequential logic
 	always @(posedge Clk) begin
-        // Set flag registers
-        G_flag = Data_Out[0];
-        Z_flag = Data_Out[1];
+		// Set flag registers
+		G_flag = Data_Out[0];
+		Z_flag = Data_Out[1];
 
         case(Ctrl_In)
             3'b001 : begin
@@ -73,6 +73,7 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
                 Y[0] <= (C || G_flag) ? 1'b1 : Y[0];
                 U <= (C || G_flag) ? {C, U} - Divisor : U;
             end
+				default;
         endcase
     end
 
