@@ -7,7 +7,7 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
 	// 1 - Step 2
 	// 2 - Step 3
 	input wire [2:0] Ctrl_In;
-    input wire clock;
+    input wire Clk;
 	
 	// Conditional output to control unit:
 	// 0 - g_i = {0 -> u < x}, {1 -> u >= x}
@@ -19,10 +19,10 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
     output wire [3:0] Remainder;
 	
 	// Internal registers and flags per specification
-	reg [BUS_WIDTH - 1 : 0] Y;       // y: n-bit quotient register
+	reg [BUS_WIDTH - 1:0] Y;       // y: n-bit quotient register
 	reg C;                           // c: 1-bit register (carry/borrow)
-    reg U;                           // u: n-bit operation register
-    reg V;                           // v: n-bit operation register
+    reg [BUS_WIDTH - 1:0] U;                           // u: n-bit operation register
+    reg [BUS_WIDTH - 1:0] V;                           // v: n-bit operation register
 
     // $clog2 takes log base 2 of a number. 
     //In this case we see how many bits are needed to encode the bus_width.
@@ -38,6 +38,11 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
 
     assign Data_Out[2] = overflow;
     assign Data_Out[3] = finish;
+
+    // Performs a bitwise AND so that outputs remain at zero until operations are finished
+    // Alternatively, you could comment out these bitwise ANDs to view the registers as they change (e.g. for debugging)
+    assign Quotient = Y & {BUS_WIDTH{finish}};
+    assign Remainder = U & {BUUS_WIDTH{finish}};
 	
 	// Sequential logic
 	always @(posedge Clk) begin
@@ -65,8 +70,8 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
                 Counter <= Counter - 1;
             end
             3'b100 : begin
-                Y[0] <= (C or G_flag) ? 1'b1 : Y[0];
-                U <= (C or G_flag) ? {C, U} - Divisor : U;
+                Y[0] <= (C || G_flag) ? 1'b1 : Y[0];
+                U <= (C || G_flag) ? {C, U} - Divisor : U;
             end
         endcase
     end
