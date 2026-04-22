@@ -1,15 +1,14 @@
 module data_path #(parameter BUS_WIDTH = 4) (U, V, X, Ctrl_In, Data_Out);
 	inout		wire	[BUS_WIDTH - 1 : 0] U, V, X;
 	
-	// Control signals from control unit:
-	// 0 - Start (used to clear and set appropriate registers)
-	// 1 - Overflow
-	// 2 - Finish
-	// 3 - g -> {0 -> u < x}, {1 -> u >= x}
-	// 4 - z -> {0 -> i > 0}, {1 -> i == 0}
-	input		reg	[4 : 0] Ctrl_In;
+	// Control signals from control unit.
+	// 0 - Step 1
+	// 1 - Step 2
+	// 2 - Step 3
+	// 3 - Finish flag
+	output wire [3:0] ctrl_out;
 	
-	// Conditional output to control unit:
+	// Conditional output to control unit.
 	// 0 - g_i = {0 -> u < x}, {1 -> u >= x}
 	// 1 - z_i = {0 -> i > 0}, {1 -> i == 0}
 	output	wire [1 : 0] Data_Out;

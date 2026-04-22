@@ -1,5 +1,5 @@
 module control_unit (clk, reset, data_in, ctrl_out);
-	// Conditional inputs from data path:
+	// Conditional inputs from data path.
 	// 0 - g_i = {0 -> u < x}, {1 -> u >= x}
 	// 1 - z_i = {0 -> i > 0}, {1 -> i == 0}
 	input		wire	[1 : 0] data_in;
@@ -10,13 +10,13 @@ module control_unit (clk, reset, data_in, ctrl_out);
 	// 1 - Step 2
 	// 2 - Step 3
 	// 3 - Finish flag
-	output wire [3:0] ctrl_o;
+	output wire [3:0] ctrl_out;
 	
 	reg [3:0] control;
 	wire [1:0] state;
 	
 	// Sets the finish flag if z = 1
-	assign ctrl_o[3:0] = control;
+	assign ctrl_out[3:0] = control;
 	
 	// State Machine
 	control_state_register cu_sm(
@@ -27,11 +27,11 @@ module control_unit (clk, reset, data_in, ctrl_out);
 	);
 
 	// Combinational Flag logic
-	always @(state, z_i) begin
-	control[3] <= z_i;
+	always @(state, data_in[1]) begin
+	control[3] <= data_in[1];
 		
 		// Locks control unit output if z = 1
-		if (!(z_i)) begin
+		if (!(data_in[1])) begin
 			case(state)
 				// Step 1
 				2'b00 : control <= 3'b001;
