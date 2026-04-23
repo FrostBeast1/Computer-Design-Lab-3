@@ -10,12 +10,13 @@ module control_state_register(clk_i, reset_i, z_i, Q_o);
     // Next-state combinational logic.
     always @(state, z_i) begin
         case(state)
-            2'b00: next_state = 2'b01;
-            2'b01: next_state = 2'b10;
-				2'b10: begin
-					next_state = z_i ? 2'b10 : 2'b01;
+            2'b00: next_state <= 2'b01;
+            2'b01: next_state <= 2'b10;
+				2'b10: next_state <= 2'b11;
+				2'b11: begin
+					next_state <= z_i ? 2'b11 : 2'b10;
 				end
-				default: next_state = 2'b00;
+				default: next_state <= 2'b00;
         endcase
 	 end
 

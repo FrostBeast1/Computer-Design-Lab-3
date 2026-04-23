@@ -6,7 +6,7 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
 	// 0 - Step 1
 	// 1 - Step 2
 	// 2 - Step 3
-	input wire [2:0] Ctrl_In;
+	input wire [3:0] Ctrl_In;
    input wire Clk;
 	
 	// Conditional output to control unit:
@@ -27,14 +27,17 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
     // $clog2 takes log base 2 of a number. 
     //In this case we see how many bits are needed to encode the bus_width.
 	reg [$clog2(BUS_WIDTH)-1:0] Counter; // iteration counter
-	reg Z_flag;                           // z: 1 when Counter == 0
-	reg G_flag;                           // G: 1 when U >= X
+	wire Z_flag;                           // z: 1 when Counter == 0
+	wire G_flag;                           // G: 1 when U >= X
    reg overflow;
    reg finish;
 	
 	// Z & G combinational assigments (we can read from these in the always block as well)
-   assign Data_Out[0] = {C,U} < Divisor ? 1'b0 : 1'b1;
-	assign Data_Out[1] = (Counter > 1'd0) && (Ctrl_In != 1'd0) ? 1'b0 : 1'b1;
+   assign G_flag = U < Divisor ? 1'b0 : 1'b1;
+	assign Z_flag = Counter > 0 ? 1'b0 : 1'b1;
+	
+	assign Data_Out[0] = G_flag;
+	assign Data_Out[1] = Z_flag;
 
    assign Data_Out[2] = overflow;
    assign Data_Out[3] = finish;
@@ -46,34 +49,41 @@ module data_path #(parameter BUS_WIDTH = 4) (Divisor, Dividend, Ctrl_In, Clk, Da
 	
 	// Sequential logic
 	always @(posedge Clk) begin
-		// Set flag registers
-		G_flag = Data_Out[0];
-		Z_flag = Data_Out[1];
-
+		
         case(Ctrl_In)
-            3'b001 : begin
+            4'b0001 : begin
                 // Initialize operation registers with dividend
                 {U, V} <= Dividend;
 
                 // Other unconditional initializations
                 Counter <= BUS_WIDTH;
                 Y <= 0;
-
-                // Initialize based on g flag
-                overflow <= G_flag ? 1'b0 : 1'b1;
-                finish <= G_flag ? 1'b0 : 1'b1;
+			   end
+				4'b0010 : begin
+					// Initialize based on g flag
+                overflow <= G_flag ? 1'b1 : 1'b0;
+                finish <= G_flag ? 1'b1 : 1'b0;
+			   end
+            4'b0100 : begin
+					if(!finish) begin
+						 // Logical Shift left of CUV (accumulator) and 
+						 {C, U, V} <= {C, U, V} << 1;
+						 Y <= Y << 1;
+						 Counter <= Counter - 1;
+					end
+					else
+						Counter <= 0;
+					end
+            4'b1000 : begin
+					if(!finish) begin
+						 Y[0] <= (C || G_flag) ? 1'b1 : Y[0];
+						 U <= (C || G_flag) ? {C, U} - Divisor : U;
+						 finish <= Z_flag || finish;
+					end
             end
-            3'b010 : begin
-                // Logical Shift left of CUV (accumulator) and 
-                {C, U, V} <= {C, U, V} << 1;
-                Y <= Y << 1;
-                Counter <= Counter - 1;
-            end
-            3'b100 : begin
-                Y[0] <= (C || G_flag) ? 1'b1 : Y[0];
-                U <= (C || G_flag) ? {C, U} - Divisor : U;
-            end
-				default;
+				default : begin
+					finish <= Z_flag || finish;
+				end
         endcase
     end
 
