@@ -1,19 +1,21 @@
-module shift_sub_84 (Dividend, Divisor, Quotient, Remainder, Overflow, Clk, Reset);
+module shift_sub_84 #(parameter BUS_WIDTH = 4) (Dividend, Divisor, 
+	Quotient, Remainder, Overflow, Clk, Reset);
+	
 	input Clk, Reset;
-	input [7:0] Dividend;
-	input [3:0] Divisor;
-	output reg [3:0] Quotient, Remainder;
+	input [BUS_WIDTH*2 - 1:0] Dividend;
+	input [BUS_WIDTH - 1:0] Divisor;
+	output reg [BUS_WIDTH - 1:0] Quotient, Remainder;
 	output reg Overflow;
 	
 	reg [2:0] state, next_state;
 	
    // Datapath registers
-   reg [3:0] u, v, x, y;
+   reg [BUS_WIDTH - 1:0] u, v, x, y;
    reg [2:0] i;
 
    // Next versions of registers
 	// Needed when reffering to itself i.e. i = i - 1
-   reg [3:0] next_u, next_v, next_x, next_y;
+   reg [BUS_WIDTH - 1:0] next_u, next_v, next_x, next_y;
    reg [2:0] next_i;
 
    reg c, next_c;

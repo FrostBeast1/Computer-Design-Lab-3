@@ -157,7 +157,7 @@ applicable agreement for further details.
 )
 (pin
 	(output)
-	(rect 336 -72 512 -56)
+	(rect 456 -72 632 -56)
 	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
 	(text "Overflow" (rect 90 0 134 12)(font "Arial" ))
 	(pt 0 8)
@@ -170,7 +170,7 @@ applicable agreement for further details.
 		(line (pt 82 8)(pt 78 12))
 		(line (pt 78 12)(pt 82 8))
 	)
-	(annotation_block (location)(rect 512 -56 568 -40))
+	(annotation_block (location)(rect 632 -56 688 -40))
 )
 (pin
 	(output)
@@ -300,21 +300,21 @@ applicable agreement for further details.
 	)
 )
 (symbol
-	(rect 96 -128 320 -16)
+	(rect 96 -128 440 -16)
 	(text "shift_sub_84" (rect 5 0 68 12)(font "Arial" ))
 	(text "inst" (rect 8 96 25 108)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
-		(text "Dividend[7..0]" (rect 0 0 69 12)(font "Arial" ))
-		(text "Dividend[7..0]" (rect 21 27 90 39)(font "Arial" ))
+		(text "Dividend[BUS_WIDTH*2-1..0]" (rect 0 0 148 12)(font "Arial" ))
+		(text "Dividend[BUS_WIDTH*2-1..0]" (rect 21 27 169 39)(font "Arial" ))
 		(line (pt 0 32)(pt 16 32)(line_width 3))
 	)
 	(port
 		(pt 0 48)
 		(input)
-		(text "Divisor[3..0]" (rect 0 0 61 12)(font "Arial" ))
-		(text "Divisor[3..0]" (rect 21 43 82 55)(font "Arial" ))
+		(text "Divisor[BUS_WIDTH-1..0]" (rect 0 0 129 12)(font "Arial" ))
+		(text "Divisor[BUS_WIDTH-1..0]" (rect 21 43 150 55)(font "Arial" ))
 		(line (pt 0 48)(pt 16 48)(line_width 3))
 	)
 	(port
@@ -332,29 +332,35 @@ applicable agreement for further details.
 		(line (pt 0 80)(pt 16 80))
 	)
 	(port
-		(pt 224 32)
+		(pt 344 32)
 		(output)
-		(text "Quotient[3..0]" (rect 0 0 67 12)(font "Arial" ))
-		(text "Quotient[3..0]" (rect 147 27 214 39)(font "Arial" ))
-		(line (pt 224 32)(pt 208 32)(line_width 3))
+		(text "Quotient[BUS_WIDTH-1..0]" (rect 0 0 135 12)(font "Arial" ))
+		(text "Quotient[BUS_WIDTH-1..0]" (rect 209 27 344 39)(font "Arial" ))
+		(line (pt 344 32)(pt 328 32)(line_width 3))
 	)
 	(port
-		(pt 224 48)
+		(pt 344 48)
 		(output)
-		(text "Remainder[3..0]" (rect 0 0 79 12)(font "Arial" ))
-		(text "Remainder[3..0]" (rect 137 43 216 55)(font "Arial" ))
-		(line (pt 224 48)(pt 208 48)(line_width 3))
+		(text "Remainder[BUS_WIDTH-1..0]" (rect 0 0 147 12)(font "Arial" ))
+		(text "Remainder[BUS_WIDTH-1..0]" (rect 199 43 346 55)(font "Arial" ))
+		(line (pt 344 48)(pt 328 48)(line_width 3))
 	)
 	(port
-		(pt 224 64)
+		(pt 344 64)
 		(output)
 		(text "Overflow" (rect 0 0 44 12)(font "Arial" ))
-		(text "Overflow" (rect 166 59 210 71)(font "Arial" ))
-		(line (pt 224 64)(pt 208 64))
+		(text "Overflow" (rect 286 59 330 71)(font "Arial" ))
+		(line (pt 344 64)(pt 328 64))
 	)
+	(parameter
+		"BUS_WIDTH"
+		"4"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
 	(drawing
-		(rectangle (rect 16 16 208 96))
+		(rectangle (rect 16 16 328 96))
 	)
+	(annotation_block (parameter)(rect 248 -160 440 -128))
 )
 (connector
 	(pt -48 -64)
@@ -385,10 +391,6 @@ applicable agreement for further details.
 	(bus)
 )
 (connector
-	(pt 320 -64)
-	(pt 336 -64)
-)
-(connector
 	(text "Dividend[7..4]" (rect -245 16 -176 28)(font "Arial" ))
 	(pt -176 40)
 	(pt -232 40)
@@ -417,18 +419,6 @@ applicable agreement for further details.
 	(bus)
 )
 (connector
-	(text "Quotient[3..0]" (rect 320 -112 387 -100)(font "Arial" ))
-	(pt 376 -96)
-	(pt 320 -96)
-	(bus)
-)
-(connector
-	(text "Remainder[3..0]" (rect 320 -96 399 -84)(font "Arial" ))
-	(pt 320 -80)
-	(pt 384 -80)
-	(bus)
-)
-(connector
 	(text "Quotient[3..0]" (rect 288 56 355 68)(font "Arial" ))
 	(pt 288 72)
 	(pt 320 72)
@@ -438,5 +428,21 @@ applicable agreement for further details.
 	(text "Remainder[3..0]" (rect 288 152 367 164)(font "Arial" ))
 	(pt 288 168)
 	(pt 320 168)
+	(bus)
+)
+(connector
+	(pt 440 -64)
+	(pt 456 -64)
+)
+(connector
+	(text "Remainder[3..0]" (rect 448 -96 527 -84)(font "Arial" ))
+	(pt 440 -80)
+	(pt 512 -80)
+	(bus)
+)
+(connector
+	(text "Quotient[3..0]" (rect 448 -112 515 -100)(font "Arial" ))
+	(pt 440 -96)
+	(pt 512 -96)
 	(bus)
 )
