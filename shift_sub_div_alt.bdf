@@ -313,7 +313,70 @@ applicable agreement for further details.
 	)
 )
 (symbol
-	(rect 304 24 504 136)
+	(rect 528 -16 816 96)
+	(text "data_path" (rect 5 0 53 12)(font "Arial" ))
+	(text "inst1" (rect 8 96 31 108)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "Divisor[BUS_WIDTH-1..0]" (rect 0 0 129 12)(font "Arial" ))
+		(text "Divisor[BUS_WIDTH-1..0]" (rect 21 27 150 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32)(line_width 3))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "Dividend[2*BUS_WIDTH-1..0]" (rect 0 0 148 12)(font "Arial" ))
+		(text "Dividend[2*BUS_WIDTH-1..0]" (rect 21 43 169 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 3))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "Ctrl_In[3..0]" (rect 0 0 59 12)(font "Arial" ))
+		(text "Ctrl_In[3..0]" (rect 21 59 80 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 3))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "Clk" (rect 0 0 16 12)(font "Arial" ))
+		(text "Clk" (rect 21 75 37 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80))
+	)
+	(port
+		(pt 288 32)
+		(output)
+		(text "Data_Out[3..0]" (rect 0 0 73 12)(font "Arial" ))
+		(text "Data_Out[3..0]" (rect 206 27 267 39)(font "Arial" ))
+		(line (pt 288 32)(pt 272 32)(line_width 3))
+	)
+	(port
+		(pt 288 48)
+		(output)
+		(text "Quotient[3..0]" (rect 0 0 67 12)(font "Arial" ))
+		(text "Quotient[3..0]" (rect 211 43 267 55)(font "Arial" ))
+		(line (pt 288 48)(pt 272 48)(line_width 3))
+	)
+	(port
+		(pt 288 64)
+		(output)
+		(text "Remainder[3..0]" (rect 0 0 79 12)(font "Arial" ))
+		(text "Remainder[3..0]" (rect 201 59 267 71)(font "Arial" ))
+		(line (pt 288 64)(pt 272 64)(line_width 3))
+	)
+	(parameter
+		"BUS_WIDTH"
+		"4"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
+	(drawing
+		(rectangle (rect 16 16 272 96))
+	)
+	(annotation_block (parameter)(rect 560 -48 752 -16))
+)
+(symbol
+	(rect 304 24 472 136)
 	(text "control_unit" (rect 5 0 61 12)(font "Arial" ))
 	(text "inst" (rect 8 96 25 108)(font "Arial" ))
 	(port
@@ -333,83 +396,34 @@ applicable agreement for further details.
 	(port
 		(pt 0 64)
 		(input)
-		(text "data_in[1..0]" (rect 0 0 61 12)(font "Arial" ))
-		(text "data_in[1..0]" (rect 21 59 82 71)(font "Arial" ))
-		(line (pt 0 64)(pt 16 64)(line_width 3))
+		(text "g_i" (rect 0 0 14 12)(font "Arial" ))
+		(text "g_i" (rect 21 59 35 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64))
 	)
 	(port
-		(pt 200 32)
-		(output)
-		(text "ctrl_out[3..0]" (rect 0 0 62 12)(font "Arial" ))
-		(text "ctrl_out[3..0]" (rect 127 27 189 39)(font "Arial" ))
-		(line (pt 200 32)(pt 184 32)(line_width 3))
-	)
-	(drawing
-		(rectangle (rect 16 16 184 96))
-	)
-)
-(symbol
-	(rect 528 -16 752 128)
-	(text "data_path" (rect 5 0 53 12)(font "Arial" ))
-	(text "inst1" (rect 8 128 31 140)(font "Arial" ))
-	(port
-		(pt 0 32)
+		(pt 0 80)
 		(input)
-		(text "Ctrl[5..0]" (rect 0 0 43 12)(font "Arial" ))
-		(text "Ctrl[5..0]" (rect 21 27 64 39)(font "Arial" ))
-		(line (pt 0 32)(pt 16 32)(line_width 3))
+		(text "z_i" (rect 0 0 12 12)(font "Arial" ))
+		(text "z_i" (rect 21 75 33 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80))
 	)
 	(port
-		(pt 224 80)
+		(pt 168 32)
 		(output)
-		(text "U_neg" (rect 0 0 31 12)(font "Arial" ))
-		(text "U_neg" (rect 177 75 208 87)(font "Arial" ))
-		(line (pt 224 80)(pt 208 80))
+		(text "ctrl_o[3..0]" (rect 0 0 53 12)(font "Arial" ))
+		(text "ctrl_o[3..0]" (rect 103 27 147 39)(font "Arial" ))
+		(line (pt 168 32)(pt 152 32)(line_width 3))
 	)
 	(port
-		(pt 224 96)
+		(pt 168 48)
 		(output)
-		(text "Done" (rect 0 0 25 12)(font "Arial" ))
-		(text "Done" (rect 182 91 207 103)(font "Arial" ))
-		(line (pt 224 96)(pt 208 96))
+		(text "Q_o[1..0]" (rect 0 0 46 12)(font "Arial" ))
+		(text "Q_o[1..0]" (rect 109 43 147 55)(font "Arial" ))
+		(line (pt 168 48)(pt 152 48)(line_width 3))
 	)
-	(port
-		(pt 224 112)
-		(output)
-		(text "Overflow" (rect 0 0 44 12)(font "Arial" ))
-		(text "Overflow" (rect 166 107 210 119)(font "Arial" ))
-		(line (pt 224 112)(pt 208 112))
-	)
-	(port
-		(pt 224 32)
-		(bidir)
-		(text "U[BUS_WIDTH-1..0]" (rect 0 0 102 12)(font "Arial" ))
-		(text "U[BUS_WIDTH-1..0]" (rect 117 27 219 39)(font "Arial" ))
-		(line (pt 224 32)(pt 208 32)(line_width 3))
-	)
-	(port
-		(pt 224 48)
-		(bidir)
-		(text "V[BUS_WIDTH-1..0]" (rect 0 0 101 12)(font "Arial" ))
-		(text "V[BUS_WIDTH-1..0]" (rect 116 43 217 55)(font "Arial" ))
-		(line (pt 224 48)(pt 208 48)(line_width 3))
-	)
-	(port
-		(pt 224 64)
-		(bidir)
-		(text "X[BUS_WIDTH-1..0]" (rect 0 0 100 12)(font "Arial" ))
-		(text "X[BUS_WIDTH-1..0]" (rect 119 59 219 71)(font "Arial" ))
-		(line (pt 224 64)(pt 208 64)(line_width 3))
-	)
-	(parameter
-		"BUS_WIDTH"
-		"4"
-		""
-		(type "PARAMETER_SIGNED_DEC")	)
 	(drawing
-		(rectangle (rect 16 16 208 128))
+		(rectangle (rect 16 16 152 96))
 	)
-	(annotation_block (parameter)(rect 560 -48 752 -16))
 )
 (connector
 	(pt 592 184)
